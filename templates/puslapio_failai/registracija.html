@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Registracija - Įmonės pavadinimas
+{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="form-container">
+        <h2>Registracijos forma</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Vartotojo vardas:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">El. pašto adresas:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Slaptažodis:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Registruotis</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

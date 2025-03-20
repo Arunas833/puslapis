@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Rezervacijos puslapis{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Rezervacijos forma</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="email">El. paštas:</label>
+        <input type="email" name="email" required><br>
+
+        <label for="date">Pasirinkite datą:</label>
+        <input type="date" name="date" required><br>
+
+        <button type="submit">Rezervuoti</button>
+    </form>
+</div>
+{% endblock %}

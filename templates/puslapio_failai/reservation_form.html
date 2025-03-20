@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Rezervacija - Įmonės pavadinimas
+{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="form-container">
+        <h2>Rezervacijos forma</h2>
+        <form method="post" id="reservationForm">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="mb-3">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                {{ form.name.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.slot_date.label_tag }}
+                {{ form.slot_date }}
+                {{ form.slot_date.errors }}
+            </div>
+            <div class="mb-3">
+                {{ form.available_slot.label_tag }}
+                {{ form.available_slot }}
+                {{ form.available_slot.errors }}
+            </div>
+            <button type="submit" class="btn btn-primary">Rezervuoti</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // JavaScript, kuris dinamiškai užpildo laiko pasirinkimus pagal pasirinktą datą
+    document.getElementById('id_slot_date').addEventListener('change', function() {
+        let selectedDate = this.value;
+        fetch(`/get_available_slots?date=${encodeURIComponent(selectedDate)}`)
+        .then(response => response.json())
+        .then(data => {
+            let slotSelect = document.getElementById('id_available_slot');
+            slotSelect.innerHTML = '';
+            if (data.error) {
+                let errorOption = document.createElement('option');
+                errorOption.textContent = data.error;
+                slotSelect.appendChild(errorOption);
+            } else {
+                data.forEach(function(slot) {
+                    let option = document.createElement('option');
+                    option.value = slot.id;
+                    option.textContent = slot.slot_time;
+                    slotSelect.appendChild(option);
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+
