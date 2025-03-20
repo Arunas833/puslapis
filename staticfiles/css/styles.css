@@ -104,7 +104,7 @@ body {
     padding: 0.6rem 1.2rem;
     border: none;
     border-radius: 4px;
-    background-color: #007bff; /* Pavyzdinė mėlyna */
+    background-color: #527aa5; /* Pavyzdinė mėlyna */
     color: #fff;
     text-decoration: none;
     font-size: 1rem;
@@ -149,7 +149,7 @@ body {
 
 /* Formos puslapiams (Registracija, Rezervacija) */
 .form-container {
-    margin-top: 6rem; /* Kad atsitrauktų nuo fiksuotos navigacijos viršaus */
+    margin-top: 5rem; /* Kad atsitrauktų nuo fiksuotos navigacijos viršaus */
     margin-bottom: 3rem;
     padding: 2rem;
     background-color: #fff;
