@@ -16,7 +16,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "default_saugus_raktas")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # ✅ Leidžiami hostai (įskaitant Railway)
-ALLOWED_HOSTS = ["127.0.0.1", os.getenv("RAILWAY_URL", "")]
+ALLOWED_HOSTS = ["127.0.0.1", "web-production-39021.up.railway.app"]
 
 CSRF_TRUSTED_ORIGINS = ["https://web-production-39021.up.railway.app"]
 
