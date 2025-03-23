@@ -18,8 +18,17 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 # Leidžiami hostai (įtraukite Railway domeną)
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'web-production-39021.up.railway.app']
 
-# CSRF apsauga
+# CSRF apsauga – nurodoma saugių originų sąrašas
 CSRF_TRUSTED_ORIGINS = ["https://web-production-39021.up.railway.app"]
+
+# Papildomi saugumo nustatymai produkcijai (jeigu DEBUG=False)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True                  # Automatiškai peradresuoja į HTTPS
+    SESSION_COOKIE_SECURE = True                # Užtikrina, kad sesijos slapukai siunčiami tik per HTTPS
+    CSRF_COOKIE_SECURE = True                   # Užtikrina, kad CSRF slapukai siunčiami tik per HTTPS
+    SECURE_HSTS_SECONDS = 31536000               # HSTS laikas (1 metai)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True        # Taikoma visoms subdomenų užklausoms
+    SECURE_HSTS_PRELOAD = True                   # Leidžia jūsų domenui būti įtrauktam į HSTS preload sąrašą
 
 # Django aplikacijos
 INSTALLED_APPS = [
