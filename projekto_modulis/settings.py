@@ -12,23 +12,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Django slaptasis raktas
 SECRET_KEY = os.getenv("SECRET_KEY", "default_slaptas_raktas")
 
-# Debug režimas (produkcinėje aplinkoje reikia DEBUG=False)
+# Debug režimas
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-# Leidžiami hostai (įtraukite Railway domeną)
+# Leidžiami hostai (vietinis + Railway)
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'web-production-39021.up.railway.app']
 
 # CSRF apsauga – nurodoma saugių originų sąrašas
 CSRF_TRUSTED_ORIGINS = ["https://web-production-39021.up.railway.app"]
 
-# Papildomi saugumo nustatymai produkcijai (jeigu DEBUG=False)
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True                  # Automatiškai peradresuoja į HTTPS
-    SESSION_COOKIE_SECURE = True                # Užtikrina, kad sesijos slapukai siunčiami tik per HTTPS
-    CSRF_COOKIE_SECURE = True                   # Užtikrina, kad CSRF slapukai siunčiami tik per HTTPS
-    SECURE_HSTS_SECONDS = 31536000               # HSTS laikas (1 metai)
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True        # Taikoma visoms subdomenų užklausoms
-    SECURE_HSTS_PRELOAD = True                   # Leidžia jūsų domenui būti įtrauktam į HSTS preload sąrašą
+# Saugumo nustatymai tik jei DJANGO_ENV=production
+if os.getenv("DJANGO_ENV") == "production":
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Django aplikacijos
 INSTALLED_APPS = [
@@ -121,5 +122,5 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
-# Iš kur siųsti el. laiškus
+# Iš kur sižiuoti el. laiškus
 DEFAULT_FROM_EMAIL = f"Paslaugų puslapis <{EMAIL_HOST_USER}>"
