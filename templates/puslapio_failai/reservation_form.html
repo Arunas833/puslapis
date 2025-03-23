@@ -40,29 +40,76 @@
 
 {% block extra_js %}
 <script>
-    // JavaScript, kuris dinamiškai užpildo laiko pasirinkimus pagal pasirinktą datą
-    document.getElementById('id_slot_date').addEventListener('change', function() {
-        let selectedDate = this.value;
-        fetch(`/get_available_slots?date=${encodeURIComponent(selectedDate)}`)
-        .then(response => response.json())
-        .then(data => {
-            let slotSelect = document.getElementById('id_available_slot');
-            slotSelect.innerHTML = '';
-            if (data.error) {
-                let errorOption = document.createElement('option');
-                errorOption.textContent = data.error;
-                slotSelect.appendChild(errorOption);
-            } else {
-                data.forEach(function(slot) {
-                    let option = document.createElement('option');
-                    option.value = slot.id;
-                    option.textContent = slot.slot_time;
-                    slotSelect.appendChild(option);
-                });
+document.addEventListener("DOMContentLoaded", function(){
+    const slotDateInput = document.getElementById('id_slot_date');
+    const slotSelect = document.getElementById('id_available_slot');
+    const reservationForm = document.getElementById('reservationForm');
+
+    // Kai data keičiasi, įjungiame select elementą, išvalome ankstesnius pasirinkimus ir užkrauname naujus slot'us
+    if (slotDateInput) {
+         slotDateInput.addEventListener('change', function() {
+            if (slotSelect) {
+                slotSelect.disabled = false;
+                slotSelect.selectedIndex = -1; // Išvalome ankstesnį pasirinkimą
             }
-        });
-    });
+            let selectedDate = this.value;
+            console.log("Pasirinkta data:", selectedDate);
+            fetch(`/get_available_slots?date=${encodeURIComponent(selectedDate)}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Gauti laiko slotai:", data);
+                if(slotSelect) {
+                    slotSelect.innerHTML = ''; // Išvalome senus pasirinkimus
+                    if (data.error) {
+                        let errorOption = document.createElement('option');
+                        errorOption.textContent = data.error;
+                        slotSelect.appendChild(errorOption);
+                    } else {
+                        // Pridedame numatytąją parinktį
+                        let defaultOption = document.createElement('option');
+                        defaultOption.value = "";
+                        defaultOption.textContent = "Pasirinkite laiką";
+                        defaultOption.disabled = true;
+                        defaultOption.selected = true;
+                        slotSelect.appendChild(defaultOption);
+
+                        data.forEach(function(slot) {
+                            let option = document.createElement('option');
+                            option.value = slot.id;
+                            option.textContent = slot.slot_time;
+                            slotSelect.appendChild(option);
+                        });
+                    }
+                } else {
+                    console.error("Nepavyko rasti elemento su id 'id_available_slot'.");
+                }
+            })
+            .catch(error => {
+                console.error("Klaida gaunant laiko slotus:", error);
+            });
+         });
+    } else {
+         console.error("Nepavyko rasti elemento su id 'id_slot_date'.");
+    }
+
+    // Kai vartotojas pasirenka laiko slotą, uždarome select elementą, kad jis nebūtų keičiamas
+    if (slotSelect) {
+         slotSelect.addEventListener('change', function() {
+             console.log("Pasirinktas slotas:", this.value);
+             this.disabled = true;
+         });
+    } else {
+         console.error("Nepavyko rasti elemento su id 'id_available_slot'.");
+    }
+
+    // Prieš pateikiant formą, reaktyvuojame select lauką, kad jo reikšmė būtų įtraukta į POST užklausą
+    if (reservationForm) {
+         reservationForm.addEventListener('submit', function() {
+             if (slotSelect) {
+                 slotSelect.disabled = false;
+             }
+         });
+    }
+});
 </script>
 {% endblock %}
-
-
