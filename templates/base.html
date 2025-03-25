@@ -9,15 +9,14 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     
-    <!-- Jūsų Custom CSS -->
+    <!-- Tavo CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-
-    {% block extra_head %}{% endblock %}
 </head>
 <body>
-    {# Rodyti navigaciją, jeigu URL vardas nėra registracija arba booking_create #}
+
+    <!-- Viršutinė navigacija -->
     {% if request.resolver_match.url_name not in "registracija booking_create" %}
-    <header class="navbar navbar-expand-lg navbar-light bg-light">
+    <header class="navbar navbar-expand-lg custom-navbar">
         <div class="container">
             <a class="navbar-brand" href="{% url 'paytono_failai:home' %}">Paslaugų Puslapis</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
@@ -38,34 +37,44 @@
     </header>
     {% endif %}
 
+    <!-- Hero sekcija -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Sveiki atvykę į paslaugų puslapį!</h1>
+            <p>Pasirinkite norimą paslaugą arba užsiregistruokite.</p>
+            <a href="{% url 'paytono_failai:registracija' %}" class="btn">Registruotis</a>
+            <a href="{% url 'paytono_failai:booking' %}" class="btn">Rezervuoti paslaugą</a>
+        </div>
+    </section>
+
     <!-- Pranešimai -->
     {% if messages %}
-      <div class="container mt-3">
+    <div class="container mt-3">
         {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
+        </div>
         {% endfor %}
-      </div>
+    </div>
     {% endif %}
 
     <!-- Pagrindinis turinys -->
-    <main class="container my-4">
+    <main class="container main-content">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Poraštė -->
-    <footer class="footer bg-light py-3">
+    <footer class="footer">
         <div class="container text-center">
             <p class="mb-0">© 2025 - Jūsų Įmonė. Visos teisės saugomos.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap JS Bundle -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Jūsų Custom JS -->
+    <!-- Tavo JS -->
     <script src="{% static 'js/main.js' %}"></script>
 
     {% block extra_js %}{% endblock %}

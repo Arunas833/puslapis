@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", "default_slaptas_raktas")
 
 # Debug režimas
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 # Leidžiami hostai (vietinis + Railway)
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'web-production-39021.up.railway.app']
@@ -21,8 +21,11 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'web-production-39021.up.railway.app'
 # CSRF apsauga – nurodoma saugių originų sąrašas
 CSRF_TRUSTED_ORIGINS = ["https://web-production-39021.up.railway.app"]
 
+
 # Saugumo nustatymai tik jei DJANGO_ENV=production
-if os.getenv("DJANGO_ENV") == "production":
+DJANGO_ENV = os.getenv("DJANGO_ENV", "development")
+
+if DJANGO_ENV == "production":
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -30,6 +33,11 @@ if os.getenv("DJANGO_ENV") == "production":
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+else:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+
 
 # Django aplikacijos
 INSTALLED_APPS = [
@@ -44,7 +52,7 @@ INSTALLED_APPS = [
 
 # Middleware (pridedame WhiteNoise, kad aptarnautų statinius failus)
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
+    #"django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

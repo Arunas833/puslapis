@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 def home(request):
     """Pagrindinis puslapis."""
-    return render(request, "puslapio_failai/index.html")
+    return render(request, "puslapio_failai/home.html")
 
 def registration(request):
     """Registracijos funkcija."""

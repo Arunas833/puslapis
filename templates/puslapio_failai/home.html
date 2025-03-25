@@ -3,12 +3,8 @@
 {% block title %}Pagrindinis puslapis{% endblock %}
 
 {% block content %}
-<section class="hero text-center p-5">
-    <div class="hero-content">
-        <h1>Sveiki atvykę į paslaugų puslapį!</h1>
-        <p class="lead">Pasirinkite norimą paslaugą arba užsiregistruokite.</p>
-        <a class="btn btn-primary me-2" href="{% url 'paytono_failai:registracija' %}">Registruotis</a>
-        <a class="btn btn-success" href="{% url 'paytono_failai:booking' %}">Rezervuoti paslaugą</a>
-    </div>
-</section>
+<!-- Papildomas turinys, jei reikia -->
+<div class="text-center mt-5">
+    <p>Čia gali būti papildomas turinys po hero sekcijos.</p>
+</div>
 {% endblock %}
